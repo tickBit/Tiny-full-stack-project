@@ -1,0 +1,29 @@
+#header {
+    text-align: center;
+}
+
+#play {
+    width: 5%;
+    height: 5%;
+    vertical-align: middle;
+}
+
+#playdiv {
+    text-align: center;
+}
+
+#commentdiv {
+    text-align: center;
+}
+
+#commentlist {
+    text-align: center;
+    width: 25%;
+    margin: auto;
+}
+
+#attributionlink {
+    vertical-align: sub;
+    position: relative;
+    margin-right: 11em;
+}

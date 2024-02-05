@@ -4,6 +4,8 @@ import json
 from flask_cors import CORS
 import vlc                          # pip install python-vlc
 
+p = None
+
 app = Flask(__name__)
 CORS(app)
 
@@ -31,14 +33,27 @@ def get_comments():
 
 @app.route('/play', methods=["GET", "POST"])
 def play_tune():
+    global p
+    
     print("Play endpoint reached...")
+    
     if request.method == "GET":
         p = vlc.MediaPlayer("./music/Terminator_memories.mp3")
         p.play()
 
-        # p.stop()
         return flask.jsonify({"Message": "Playing..."})
 
+@app.route('/stop', methods=["GET", "STOP"])
+def stop_tune():
+    global p
+    print("Stop tune endpoint reached...")
+    if request.method == "GET":
+        if p != None:
+            p.stop()
+            p = None
+
+        return flask.jsonify({"Message": "Stopping playback..."})
+    
 @app.route('/comment', methods=["GET", "POST"])
 def get_comment():
     print("Comment received...")

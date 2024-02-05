@@ -8,6 +8,10 @@
     vertical-align: middle;
 }
 
+#stop {
+    vertical-align: middle;
+}
+
 #playdiv {
     text-align: center;
 }
@@ -25,5 +29,21 @@
 #attributionlink {
     vertical-align: sub;
     position: relative;
-    margin-right: 11em;
+    margin-right: 10em;
+}
+
+#stoplink {
+    vertical-align: sub;
+    position: relative;
+    text-align: bottom;
+}
+
+#stoplink2 {
+    vertical-align: sub;
+    position: relative;
+}
+
+#txtLink2 {
+    vertical-align: sub;
+    position: relative;
 }

@@ -10,10 +10,16 @@ window.onload = function() {
         return xhr;
     };
 
-    function dataCallback() {
+    function playCallback() {
         // Check response
         if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log("Data received!");
+            console.log("Play message received!");
+        }
+    }
+
+    function stopCallback() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log("Stop playing message received!");
         }
     }
 
@@ -44,13 +50,21 @@ window.onload = function() {
     function playTune() {
         console.log("Play tune...");
         xhr = getXmlHttpRequestObject();
-        xhr.onreadystatechange = dataCallback;
+        xhr.onreadystatechange = playCallback;
         xhr.open("GET", "http://localhost:6969/play", true);
         // Send the request over the network
         xhr.send(null);
     }
 
-    function sendDataCallback() {
+    function stopTune() {
+        console.log("Stop the tune...");
+        xhr = getXmlHttpRequestObject();
+        xhr.onreadystatechange = stopCallback;
+        xhr.open("GET", "http://localhost:6969/stop", true);
+        xhr.send(null);
+    }
+
+    function sendplayCallback() {
         // Check response
         if (xhr.readyState == 4 && xhr.status == 201) {
             console.log("Data creation response received!");
@@ -69,6 +83,12 @@ window.onload = function() {
         playTune();
     });
 
+    const stopButton = document.getElementById("stop");
+
+    stopButton.addEventListener("click", (event) => {
+        stopTune();
+    });
+    
     const sendButton = document.getElementById("send");
     sendButton.addEventListener("click", (event) => {
 
@@ -77,7 +97,7 @@ window.onload = function() {
         if (text.trim() != "") {
             console.log("Send comment to server...");
             xhr = getXmlHttpRequestObject();
-            xhr.onreadystatechange = sendDataCallback;
+            xhr.onreadystatechange = sendplayCallback;
             xhr.open("POST", "http://localhost:6969/comment", true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             // Send the request over the network

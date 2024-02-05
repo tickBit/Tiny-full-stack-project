@@ -54,6 +54,11 @@ window.onload = function() {
         // Check response
         if (xhr.readyState == 4 && xhr.status == 201) {
             console.log("Data creation response received!");
+
+            // clear the textarea
+            const textArea = document.getElementById("comment");
+            textArea.value = "";
+
             getComments();
         }
     }
@@ -69,13 +74,15 @@ window.onload = function() {
 
         const text = document.getElementById("comment").value
 
-        console.log("Send comment to server...");
-        xhr = getXmlHttpRequestObject();
-        xhr.onreadystatechange = sendDataCallback;
-        xhr.open("POST", "http://localhost:6969/comment", true);
-        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        // Send the request over the network
-        xhr.send(JSON.stringify({"data": text}));
+        if (text.trim() != "") {
+            console.log("Send comment to server...");
+            xhr = getXmlHttpRequestObject();
+            xhr.onreadystatechange = sendDataCallback;
+            xhr.open("POST", "http://localhost:6969/comment", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            // Send the request over the network
+            xhr.send(JSON.stringify({"data": text}));
+        }
     });
 
     getComments();

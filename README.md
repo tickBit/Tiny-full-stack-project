@@ -1,6 +1,8 @@
 # Tiny full stack project
 
-Tiny full stack experiment. User can play a tune by clicking the play icon at the frontend. The music starts playing from the backend. User can comment the song and the comments are saved into backend and are shown at the frontend.
+Tiny full stack experiment. User can play a tune by clicking the play icon at the frontend. The music starts playing from the backend. User can upload more music to the backend. Comments button can be used to toggle comments section for each tune. Each tune has its own comments..
+
+I should develop this one too a bit further, take care all the special cases..
 
 ## Instructions
 
@@ -11,7 +13,9 @@ Tiny full stack experiment. User can play a tune by clicking the play icon at th
 
 - flask
 - flask-cors
+- flask_socketio
 - python-vlc
+- watchdog
 
 ## The music
 

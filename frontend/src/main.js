@@ -2,6 +2,68 @@ window.onload = function() {
 
     var xhr = null;
 
+    var socket = io.connect('http://localhost:6969');
+    socket.on('connect', function() {
+        console.log('Connected!');
+    });
+
+    socket.on('message', function(event) {
+        console.log(event);
+
+        const playDiv = document.getElementById("playdiv")
+        while (playDiv.firstChild != null) playDiv.removeChild(playDiv.firstChild);
+
+        let fileList = event.split("\n")
+        fileList.pop(); // remove the last "\n"
+
+        let index = 1;
+
+        let template = ``;
+
+        for (f of fileList) {
+            template += `<div><img class="playbutton" id="play${index}" src="./gfx/play_4208490.png"/>${f}
+            <img class="stopbutton" id="stop${index}" src="./gfx/icons8-stop-button-48.png"/>
+            <button id="comment${index}"><label>Comments</label></button>
+            <div id="comments${index}"></div>
+            <br/>
+            </div>`
+            index += 1;
+        }
+
+        playDiv.innerHTML = template;
+
+        for (let i = 1; i < fileList.length + 1; i++) {
+            const playButton = document.getElementById("play"+i);
+
+            playButton.addEventListener("click", (event) => {
+                playTune(fileList[i-1]);
+            });
+        }
+
+        for (let i = 1; i < fileList.length + 1; i++) {
+            const stopButton = document.getElementById("stop"+i);
+
+            stopButton.addEventListener("click", (event) => {
+                stopTune();
+            });
+        }
+
+        for (let i = 1; i < fileList.length + 1; i++) {
+            const commentsButton = document.getElementById("comment"+i);
+
+                commentsButton.addEventListener("click", (event) => {
+                
+                    const commDiv = document.getElementById("comments"+i);
+
+                    if (commDiv.firstChild == null) {
+                        getNComments(i);
+                    } else {
+                        while (commDiv.firstChild != null) commDiv.removeChild(commDiv.firstChild);
+                    }
+            });
+        }
+    });
+
     getXmlHttpRequestObject = function () {
         if (!xhr) {
             // Create a new XMLHttpRequest object 
@@ -23,35 +85,70 @@ window.onload = function() {
         }
     }
 
-    function commentsCallback() {
+    function commentsNCallback() {
         if (xhr.readyState == 4 && xhr.status == 201) {
             const comments = JSON.parse(xhr.responseText).comments;
+            const tune = JSON.parse(xhr.responseText).tune;
+            const commArr = comments.split("*END_OF_COMMENT*")
             
-            let commentList = document.getElementById("commentlist");
-            
-            while (commentList.firstChild != null) commentList.removeChild(commentList.firstChild);
 
-            const commentsArr = comments.split("*END_OF_COMMENT*\n");
+            const commentDiv = document.getElementById("comments"+tune);
             
-            for (let i = 0; i < commentsArr.length; i++) {
-                let p = commentList.appendChild(document.createElement("p"));
-                p.textContent = commentsArr[i];
+            while (commentDiv.firstChild != null) commentDiv.removeChild(commentDiv.firstChild);
+
+            for (let i = 0; i < commArr.length; i++) {
+                let p = commentDiv.appendChild(document.createElement("p"));
+                p.textContent = commArr[i];
             }
+
+            let ta = document.createElement("textarea");
+            ta.setAttribute("rows", "5");
+            ta.setAttribute("cols", "33");
+            ta.setAttribute("placeholder", "What do you think?")
+            ta.setAttribute("id", "ta"+tune);
+
+            commentDiv.appendChild(ta);
+            
+
+            let sb = document.createElement("button");
+            sb.setAttribute("id","button"+tune);
+
+            sb.addEventListener("click", (event) => {
+                const text = document.getElementById("ta"+tune).value
+
+                if (text.trim() != "") {
+                    console.log("Send comment to server...");
+                    xhr = getXmlHttpRequestObject();
+                    xhr.onreadystatechange = sendCommentCallback;
+                    xhr.open("POST", "http://localhost:6969/comment", true);
+                    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    // Send the request over the network
+                    xhr.send(JSON.stringify({"data": "#"+tune.toString()+" "+text}));
+                }
+            });
+            let tn = document.createElement("textnode");
+            tn.textContent = "Send";
+            sb.appendChild(tn);
+
+            commentDiv.appendChild(sb);
+            
+            console.log(comments);
         }
     }
-    function getComments() {
+
+    function getNComments(i) {
         console.log("Getting comments...");
         xhr = getXmlHttpRequestObject();
-        xhr.onreadystatechange = commentsCallback;
-        xhr.open("POST", "http://localhost:6969/comments", true);
+        xhr.onreadystatechange = commentsNCallback;
+        xhr.open("POST", "http://localhost:6969/comments/"+i, true);
         xhr.send(null);
     }
 
-    function playTune() {
+    function playTune(message) {
         console.log("Play tune...");
         xhr = getXmlHttpRequestObject();
         xhr.onreadystatechange = playCallback;
-        xhr.open("GET", "http://localhost:6969/play", true);
+        xhr.open("GET", "http://localhost:6969/play/"+message, true);
         // Send the request over the network
         xhr.send(null);
     }
@@ -64,46 +161,63 @@ window.onload = function() {
         xhr.send(null);
     }
 
-    function sendplayCallback() {
+    function sendCommentCallback() {
         // Check response
         if (xhr.readyState == 4 && xhr.status == 201) {
             console.log("Data creation response received!");
 
+            console.log(xhr.responseText);
+
+            let tuneNr = parseInt(JSON.parse(xhr.responseText)["message"].toString().replace("received: #", ""));
+            
             // clear the textarea
-            const textArea = document.getElementById("comment");
+            const textArea = document.getElementById("ta"+tuneNr);
             textArea.value = "";
 
-            getComments();
+            getNComments(tuneNr);
         }
     }
 
-    const playButton = document.getElementById("play");
+    function getNComments(tuneNr) {
 
-    playButton.addEventListener("click", (event) => {
-        playTune();
+        console.log("Getting comments...");
+
+        xhr = getXmlHttpRequestObject();
+        xhr.onreadystatechange = commentsNCallback;
+        xhr.open("POST", "http://localhost:6969/comments/"+tuneNr, true);
+        xhr.send(null);
+    }
+
+    // print the filename of file to be uploaded...
+    const fileInput = document.getElementById("fileInput");
+    fileInput.addEventListener("change", (event) => {
+        const fileName = event.target.files[0].name;
+
+        const textNode = document.getElementById('fileName')
+        textNode.textContent = fileName;
     });
 
-    const stopButton = document.getElementById("stop");
-
-    stopButton.addEventListener("click", (event) => {
-        stopTune();
-    });
-    
-    const sendButton = document.getElementById("send");
-    sendButton.addEventListener("click", (event) => {
-
-        const text = document.getElementById("comment").value
-
-        if (text.trim() != "") {
-            console.log("Send comment to server...");
-            xhr = getXmlHttpRequestObject();
-            xhr.onreadystatechange = sendplayCallback;
-            xhr.open("POST", "http://localhost:6969/comment", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            // Send the request over the network
-            xhr.send(JSON.stringify({"data": text}));
-        }
+    const uploadButton = document.getElementById("upload");
+    uploadButton.addEventListener("click", (event) => {
+        uploadFile();
     });
 
-    getComments();
+    function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        let formData = new FormData();
+        formData.append('file', file);
+
+        xhr.open('POST', 'http://localhost:6969/upload', true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log('File sent successfully!');
+            }
+        };
+
+        xhr.send(formData);
+    }
+
 }

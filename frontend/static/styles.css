@@ -2,13 +2,21 @@
     text-align: center;
 }
 
+#attributiondiv {
+    text-align: center;
+}
+
 #play {
+    vertical-align: middle;
+}
+
+.playbutton {
     width: 5%;
     height: 5%;
     vertical-align: middle;
 }
 
-#stop {
+.stopbutton {
     vertical-align: middle;
 }
 
@@ -26,24 +34,28 @@
     margin: auto;
 }
 
-#attributionlink {
+.attributionlink {
     vertical-align: sub;
     position: relative;
-    margin-right: 10em;
 }
 
-#stoplink {
+.stoplink {
     vertical-align: sub;
     position: relative;
     text-align: bottom;
 }
 
-#stoplink2 {
+.stoplink2 {
     vertical-align: sub;
     position: relative;
 }
 
-#txtLink2 {
+.txtLink2 {
     vertical-align: sub;
     position: relative;
+}
+
+#uploaddiv {
+    margin: auto;
+    text-align: center;
 }

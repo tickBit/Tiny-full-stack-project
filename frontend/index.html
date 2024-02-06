@@ -6,29 +6,36 @@
     <meta name="theme-color" content="#000000" />
     <meta name="description" content="Tiny full stack project"/>
     <link rel="StyleSheet" href="./static/styles.css" type="text/css"/>
+
+    <script src="https://cdn.socket.io/4.1.2/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script type = "text/javascript" src="./src/main.js"></script>
 
     <title>Tiny full stack project</title>
   </head>
 <body>
     <h1 id="header">Tiny full stack project</h1>
-
-    <div id="playdiv">
-        <img id="play" src="./gfx/play_4208490.png"/>
-        Terminator memories.mp3 (42s)
-        <img id="stop" src="./gfx/icons8-stop-button-48.png"/>
-        <br/>
-        <a id="attributionlink" href="https://www.freepik.com/search?format=search&last_filter=query&last_value=play+button&query=play+button&type=icon">Icon by Good Ware</a>
-        <a id="stoplink" target="_blank" href="https://icons8.com/icon/ZIvrhExTBRSu/stop-button">Stop Button</a><textnode id="txtLink2"> icon by </textnode><a id="stoplink2" target="_blank" href="https://icons8.com">Icons8</a>
-
-      </div>
-    <div id="commentdiv">
-        <h2>Comments for the tune</h2>
-        <p>Your comments:</p>
-        <textarea id="comment" name="comment" rows="5" cols="33" placeholder="What do you think?"></textarea>
-        <button id="send">Send</button>
+    <div id="uploaddiv">
+      <button for="fileInput">
+      <label for="fileInput">Fetch file
+      <input hidden id="fileInput" type="file" name="file"/>
+      </label></button>
+      <textnode id="fileName"></textnode>
+      <input id="upload" name="file" type="submit" value="Upload"/>
     </div>
-    <div id="commentlist">
+    
+    <div id="playdiv"></div>
+
+    <div id="attributiondiv">
+      <h3>Attributions for the icons</h3>
+      <img class="playbutton" src="./gfx/play_4208490.png"/>
+      <br/>
+      <a class="attributionlink" href="https://www.freepik.com/search?format=search&last_filter=query&last_value=play+button&query=play+button&type=icon">Icon by Good Ware</a>
+      <br/>
+      <img src="./gfx/icons8-stop-button-48.png"/>
+      <br/>
+      <a class="stoplink" target="_blank" href="https://icons8.com/icon/ZIvrhExTBRSu/stop-button">Stop Button</a><textnode class="txtLink2"> icon by </textnode><a class="stoplink2" target="_blank" href="https://icons8.com">Icons8</a>
 
     </div>
 </body>

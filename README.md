@@ -8,6 +8,8 @@ Below is a picture of the project running.
 
 I have locally added some music to the backend and commented the musics.. (All those musics in the picture are written by me :)
 
+The comments for each tune depend on the order in the list, particularly on the ID of the element. If you delete music, that you have added, the comments for that music should be deleted too.
+
 I should develop this one too a bit further, take care all the special cases..
 
 ## Instructions

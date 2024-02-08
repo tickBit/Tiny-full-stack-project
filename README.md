@@ -4,7 +4,7 @@ Tiny full stack experiment. User can play a tune by clicking the play icon at th
 
 Below is a picture of the project running.
 
-![Tiny-full-stack-project](https://github.com/tickBit/Tiny-full-stack-project/assets/61118857/e88fcf35-aad6-4113-827e-c6d7b8cc007a)
+![Tiny-full-stack-project](https://github.com/tickBit/Tiny-full-stack-project/assets/61118857/1d34fe20-17a6-47ea-80fe-d33f064f3c8b)
 
 I have locally added some music to the backend and commented the musics.. (All those musics in the picture are written by me :)
 

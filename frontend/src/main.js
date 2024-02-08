@@ -8,7 +8,6 @@ window.onload = function() {
     });
 
     socket.on('message', function(event) {
-        console.log(event);
 
         const playDiv = document.getElementById("playdiv")
         while (playDiv.firstChild != null) playDiv.removeChild(playDiv.firstChild);
@@ -16,17 +15,24 @@ window.onload = function() {
         let fileList = event.split("\n")
         fileList.pop(); // remove the last "\n"
 
+        console.log(fileList);
+
         let index = 1;
 
         let template = ``;
 
         for (f of fileList) {
-            template += `<div><img class="playbutton" id="play${index}" src="./gfx/play_4208490.png"/>${f}
-            <img class="stopbutton" id="stop${index}" src="./gfx/icons8-stop-button-48.png"/>
-            <button id="comment${index}"><label>Comments</label></button>
-            <div id="comments${index}"></div>
-            <br/>
-            </div>`
+            template += `
+            <table class="tbl-playlist"><thead id="tbl-head-id">
+            <tr class="trow">
+            <td class="tdplay"><img class="playimg" id="play${index}" src="./gfx/play_4208490.png" /></td>
+            <td class="tdname">${f}</td>
+            <td class="tdstop" id="stop${index}"><img src="./gfx/icons8-stop-button-48.png" /></td>
+            <td class="tdcomm"><button id="comment${index}">Comments</button></td>
+            </tr>
+            </thead></table>
+            <div class="commentdiv"><p id="comments${index}"></p></div>
+            `
             index += 1;
         }
 
@@ -62,6 +68,7 @@ window.onload = function() {
                     }
             });
         }
+
     });
 
     getXmlHttpRequestObject = function () {

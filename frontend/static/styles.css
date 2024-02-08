@@ -6,32 +6,21 @@
     text-align: center;
 }
 
-#play {
-    vertical-align: middle;
-}
-
-.playbutton {
-    width: 5%;
-    height: 5%;
-    vertical-align: middle;
-}
-
-.stopbutton {
-    vertical-align: middle;
+.playimg {
+    width: 5em;
+    height: 5em;
+    text-align: left;
 }
 
 #playdiv {
-    text-align: center;
+    margin-left: auto;
+	margin-right: auto;
 }
 
-#commentdiv {
+.commentdiv {
+    margin-left: auto;
+	margin-right: auto;
     text-align: center;
-}
-
-#commentlist {
-    text-align: center;
-    width: 25%;
-    margin: auto;
 }
 
 .attributionlink {
@@ -39,23 +28,35 @@
     position: relative;
 }
 
-.stoplink {
-    vertical-align: sub;
-    position: relative;
-    text-align: bottom;
-}
-
-.stoplink2 {
-    vertical-align: sub;
-    position: relative;
-}
-
-.txtLink2 {
-    vertical-align: sub;
-    position: relative;
-}
-
 #uploaddiv {
     margin: auto;
     text-align: center;
+}
+
+.tbl-playlist {
+    margin-left: auto;
+	margin-right: auto;
+}
+
+.trow {
+    text-align: left;
+}
+
+.tdname {
+    text-align: left;
+	width: 20em;
+}
+
+.tdstop {
+	width: 4em;
+}
+
+.tdcomm {
+	width: 8em;
+}
+
+.tdplay {
+    width: 7em;
+    height: 7em;
+    text-align: right;
 }
